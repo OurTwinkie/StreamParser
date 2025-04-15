@@ -1,8 +1,8 @@
 package ru.zephyrka;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import ru.zephyrka.Utils.Parser;
-import ru.zephyrka.Utils.Stream;
+import ru.zephyrka.utils.Parser;
+import ru.zephyrka.utils.Stream;
 import ru.zephyrka.gui.MainFrame;
 
 import javax.swing.*;

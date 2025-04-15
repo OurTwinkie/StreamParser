@@ -1,4 +1,4 @@
-package ru.zephyrka.Utils;
+package ru.zephyrka.utils;
 
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
@@ -31,13 +31,13 @@ public class Parser {
     private static final String KICK_API_URL = "https://api.kick.com/public/v1/livestreams";
     private static final OkHttpClient client = new OkHttpClient();
     private static final Gson gson = new Gson();
-    private static final Map<String, ru.zephyrka.Utils.Stream> STRING_STREAM_HASH_MAP = new HashMap<>();
+    private static final Map<String, ru.zephyrka.utils.Stream> STRING_STREAM_HASH_MAP = new HashMap<>();
 
     private static void getKickStreams(String kickToken, int targetCount) throws InterruptedException {
         val containsStreams = new AtomicInteger(0);
         val streamsCount = new AtomicInteger(0);
         val perPage = 100;
-        List<ru.zephyrka.Utils.Stream> matchingStreams = new ArrayList<>();
+        List<ru.zephyrka.utils.Stream> matchingStreams = new ArrayList<>();
 
         for (int i = 0; i < targetCount; i++) {
             val url = HttpUrl.parse(KICK_API_URL).newBuilder()
@@ -72,7 +72,7 @@ public class Parser {
                     break;
                 }
 
-                List<ru.zephyrka.Utils.Stream> resultStreams = new ArrayList<>();
+                List<ru.zephyrka.utils.Stream> resultStreams = new ArrayList<>();
                 for (val element : streams) {
                     val stream = element.getAsJsonObject();
 
@@ -91,7 +91,7 @@ public class Parser {
                     val title = stream.get("stream_title").getAsString();
                     val language = stream.get("language").getAsString();
                     if (language.equals("ru")) {
-                        ru.zephyrka.Utils.Stream stream1 = new ru.zephyrka.Utils.Stream(
+                        ru.zephyrka.utils.Stream stream1 = new ru.zephyrka.utils.Stream(
                                 "https://kick.com/" + streamer,
                                 title,
                                 categoryName,
@@ -181,13 +181,13 @@ public class Parser {
     }
 
     @NotNull
-    private static ru.zephyrka.Utils.Stream getStream(Video video) {
+    private static ru.zephyrka.utils.Stream getStream(Video video) {
         val title = video.getSnippet().getTitle();
         val channel = video.getSnippet().getChannelTitle();
         val viewers = String.valueOf(video.getLiveStreamingDetails().getConcurrentViewers());
         val url = "https://www.youtube.com/watch?v=" + video.getId();
 
-        return new ru.zephyrka.Utils.Stream(
+        return new ru.zephyrka.utils.Stream(
                 url,
                 title,
                 "",
@@ -231,7 +231,7 @@ public class Parser {
             System.out.println("Collected: " + resultStreams.size() + " streams");
             resultStreams.forEach(stream -> {
                 if (!STRING_STREAM_HASH_MAP.containsKey(stream.getId()))
-                    STRING_STREAM_HASH_MAP.put(stream.getId(), new ru.zephyrka.Utils.Stream("https://twitch.tv/"+stream.getUserName(), stream.getTitle(), stream.getGameName(), stream.getViewerCount(), stream.getUserName()));
+                    STRING_STREAM_HASH_MAP.put(stream.getId(), new ru.zephyrka.utils.Stream("https://twitch.tv/"+stream.getUserName(), stream.getTitle(), stream.getGameName(), stream.getViewerCount(), stream.getUserName()));
             });
 
             if (cursor == null || resultStreams.size() >= targetCount) {
@@ -286,7 +286,7 @@ public class Parser {
         System.out.println("Total streams found: " + STRING_STREAM_HASH_MAP.size());
     }
 
-    public static Collection<ru.zephyrka.Utils.Stream> getCollectedStreams() {
+    public static Collection<ru.zephyrka.utils.Stream> getCollectedStreams() {
         return STRING_STREAM_HASH_MAP.values();
     }
 

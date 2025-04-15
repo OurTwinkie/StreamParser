@@ -1,4 +1,4 @@
-package ru.zephyrka.Utils;
+package ru.zephyrka.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
